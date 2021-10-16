@@ -85,11 +85,7 @@ public class HomeWorkApp {
 
     public static boolean addTwoNumbers(int a, int b) {
         int c = a + b;
-        if (c >= 10 && c <= 20) {
-            return true;
-        } else {
-            return false;
-        }
+        return (c >= 10 && c <= 20);
     }
 
     // Задание 2
@@ -103,11 +99,7 @@ public class HomeWorkApp {
 
     // Задание 3
     public static boolean numberBoolean(int a) {
-        if (a < 0) {
-            return true;
-        } else {
-            return false;
-        }
+        return (a < 0);
     }
 
     // Задание 4
@@ -131,5 +123,4 @@ public class HomeWorkApp {
             return false;
         }
     }
-
 }
