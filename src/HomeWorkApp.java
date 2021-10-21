@@ -5,7 +5,7 @@ import java.util.Scanner;
 public class HomeWorkApp {
     public static char [][] map;
     public static final int SIZE = 5;
-    public static final int DOTS_TO_WIN = 3;
+    public static final int DOTS_TO_WIN = 4;
 
     public static final char DOT_EMPTY = '.';
     public static final char DOT_X = 'X';
@@ -206,7 +206,7 @@ public class HomeWorkApp {
     }
 
     //Проверка победы (переделана при помощи циклов)
-    public static boolean vinner (char symb){
+    public static boolean diagonalsColsRows (char symb, int x, int y){
        // if (map[0][0] == symb && map [0][1] == symb && map[0][2] == symb) return true;
        // if (map[1][0] == symb && map [1][1] == symb && map[1][2] == symb) return true;
        // if (map[2][0] == symb && map [2][1] == symb && map[2][2] == symb) return true;
@@ -221,23 +221,21 @@ public class HomeWorkApp {
         boolean cols;
         boolean rows;
 
-        for (int i = 0; i < SIZE; i++){
+        for (int i = 0; i < DOTS_TO_WIN; i++){
               leftDiagonal &= (map[i][i] == symb);
-              rightDiagonal &= (map [3-i-1][i] == symb);
+              rightDiagonal &= (map [DOTS_TO_WIN-i-1][i] == symb);
             }
         if (leftDiagonal || rightDiagonal) return true;
 
-        for (int i = 0; i < SIZE; i++){
+        for (int i = x; i < DOTS_TO_WIN+x; i++){
             cols = true;
             rows = true;
-            for (int j = 0; j < SIZE; j++){
+            for (int j = y; j < DOTS_TO_WIN+y; j++){
                 cols &= (map[i][j] == symb);
                 rows &= (map[j][i] == symb);
             }
             if (cols || rows) return true;
         }
-
-
 
         //for (int i = 0; i < SIZE; i++) {
         //    for (int j = 0; j < SIZE; j++) {
@@ -246,6 +244,15 @@ public class HomeWorkApp {
 
         return false;
     }
+    public static boolean vinner (char symb){
+        for (int i=0;i<2;i++){
+            for (int j = 0; j < 2; j++){
+                if (diagonalsColsRows(symb, i, j)) return true;
+            }
+        }
+        return false;
+    }
+
 
     //Ничья
     public static boolean isMapFull (){
