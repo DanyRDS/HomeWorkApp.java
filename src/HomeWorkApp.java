@@ -1,6 +1,18 @@
 import java.util.Arrays;
+import java.util.Random;
+import java.util.Scanner;
 
 public class HomeWorkApp {
+    public static char [][] map;
+    public static final int SIZE = 5;
+    public static final int DOTS_TO_WIN = 3;
+
+    public static final char DOT_EMPTY = '.';
+    public static final char DOT_X = 'X';
+    public static final char DOT_O = 'O';
+
+
+
     public static void main(String[] args) {
         // задания разделены пустой строкой для удобства чтения
         System.out.println("Задание 2");
@@ -80,8 +92,172 @@ public class HomeWorkApp {
 
         int[] arrayC = {1, 2, 3, 4, 5, 6, 7};
         arrayCycle(arrayC, 0);
+
+        initMap();
+        showMap();
+
+        while (true){
+            human();
+            showMap();
+            if (vinner(DOT_X)) {
+                System.out.println("Победил человек");
+            break;
+            }
+            if (isMapFull()) {
+                System.out.println("Карта заполнена. Ничья");
+                break;
+            }
+
+
+            computer();
+            showMap();
+            if (vinner(DOT_O)) {
+                System.out.println("Победил компьютер");
+                break;
+            }
+            if (isMapFull()) {
+                System.out.println("Карта заполнена. Ничья");
+                break;
+            }
+        }
     }
 
+    // Домашнее задание 4
+    //Инициализация карты (заполнение)
+    public static void initMap () {
+    map = new char [SIZE][SIZE];
+
+    for (int i = 0; i < SIZE; i++){
+        for (int j = 0; j < SIZE; j++){
+            map [i][j] = DOT_EMPTY;
+        }
+    }
+    }
+    //Вывод карты в консоль
+    public static void showMap (){
+        for (int i = 0; i <= SIZE; i++) {
+            System.out.print(i);
+            System.out.print(' ');
+        }
+        System.out.println();
+
+        for (int i = 0; i < SIZE; i++){
+            System.out.print(i+1);
+            System.out.print(' ');
+
+            for (int j = 0; j < SIZE; j++){
+                System.out.print(map[i][j]);
+                System.out.print(' ');
+            }
+
+        System.out.println();
+        }
+        //System.out.println(Arrays.toString(map));
+    }
+
+    //Ход игрока (крестики)
+    public static void human (){
+    int x;
+    int y;
+
+
+        Scanner scanner = new Scanner(System.in);
+        do {
+            System.out.println("Введите координаты X и Y");
+            x = scanner.nextInt() - 1;
+            y = scanner.nextInt() - 1;
+        } while (!isCellValid(x, y));
+
+
+        map [y][x] = DOT_X;
+    }
+
+    //Проверка координат
+    public static boolean isCellValid (int x, int y){
+    if (x < 0 || x >= SIZE || y < 0 || y >= SIZE) {
+        return false;
+        }
+
+    if (map[y][x] == DOT_EMPTY){
+        return true;
+        }
+
+    return false;
+
+    }
+
+    //Ход ИИ
+    public static void computer (){
+        int x;
+        int y;
+
+
+        Random myRandom = new Random();
+        do {
+            System.out.println("Введите координаты X и Y");
+            x = myRandom.nextInt(SIZE);
+            y = myRandom.nextInt(SIZE);
+        } while (!isCellValid(x, y));
+
+        System.out.println("Компьютер совершил ход в точке:");
+        System.out.println("Х - " + (x + 1));
+        System.out.println("Y - " + (y + 1));
+        map [y][x] = DOT_O;
+    }
+
+    //Проверка победы (переделана при помощи циклов)
+    public static boolean vinner (char symb){
+       // if (map[0][0] == symb && map [0][1] == symb && map[0][2] == symb) return true;
+       // if (map[1][0] == symb && map [1][1] == symb && map[1][2] == symb) return true;
+       // if (map[2][0] == symb && map [2][1] == symb && map[2][2] == symb) return true;
+       // if (map[0][0] == symb && map [1][1] == symb && map[2][2] == symb) return true;
+       // if (map[2][0] == symb && map [1][1] == symb && map[0][2] == symb) return true;
+       // if (map[0][0] == symb && map [1][0] == symb && map[2][0] == symb) return true;
+       // if (map[0][1] == symb && map [1][1] == symb && map[2][1] == symb) return true;
+       // if (map[0][2] == symb && map [1][2] == symb && map[2][2] == symb) return true;
+
+        boolean leftDiagonal = true;
+        boolean rightDiagonal = true;
+        boolean cols;
+        boolean rows;
+
+        for (int i = 0; i < SIZE; i++){
+              leftDiagonal &= (map[i][i] == symb);
+              rightDiagonal &= (map [3-i-1][i] == symb);
+            }
+        if (leftDiagonal || rightDiagonal) return true;
+
+        for (int i = 0; i < SIZE; i++){
+            cols = true;
+            rows = true;
+            for (int j = 0; j < SIZE; j++){
+                cols &= (map[i][j] == symb);
+                rows &= (map[j][i] == symb);
+            }
+            if (cols || rows) return true;
+        }
+
+
+
+        //for (int i = 0; i < SIZE; i++) {
+        //    for (int j = 0; j < SIZE; j++) {
+        //        if (i == j || i + j + 1 == SIZE) size[i][j] = 1;
+
+
+        return false;
+    }
+
+    //Ничья
+    public static boolean isMapFull (){
+        for (int i = 0; i < SIZE; i++){
+            for (int j = 0; j < SIZE; j++){
+                if (map[i][j] == DOT_EMPTY) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
 
     public static void printThreeWords() {
         System.out.println("orange");
@@ -282,4 +458,5 @@ public class HomeWorkApp {
             System.out.println("Смещённый массив: " + Arrays.toString(array8));
         }
     }
+
 }
