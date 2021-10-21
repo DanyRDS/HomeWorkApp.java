@@ -4,8 +4,8 @@ import java.util.Scanner;
 
 public class HomeWorkApp {
     public static char [][] map;
-    public static final int SIZE = 5;
-    public static final int DOTS_TO_WIN = 4;
+    public static final int SIZE = 10;
+    public static final int DOTS_TO_WIN = 3;
 
     public static final char DOT_EMPTY = '.';
     public static final char DOT_X = 'X';
@@ -245,8 +245,8 @@ public class HomeWorkApp {
         return false;
     }
     public static boolean vinner (char symb){
-        for (int i=0;i<2;i++){
-            for (int j = 0; j < 2; j++){
+        for (int i=0;i < SIZE-DOTS_TO_WIN+1;i++){
+            for (int j = 0; j < SIZE-DOTS_TO_WIN+1; j++){
                 if (diagonalsColsRows(symb, i, j)) return true;
             }
         }
